@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-external
+  namespace: prod-contacts-app # <-- ADDED NAMESPACE
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: postgres-external
+  namespace: prod-contacts-app # <-- ADDED NAMESPACE
+subsets:
+  - addresses:
+      - ip: "192.168.0.163"
+    ports:
+      - port: 5432

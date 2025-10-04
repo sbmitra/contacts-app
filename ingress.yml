@@ -1,0 +1,21 @@
+# ingress-revised.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: contact-app-ingress
+  namespace: prod-contacts-app
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "contact-app.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: contact-app-service
+            port:
+              number: 80

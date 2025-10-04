@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact-app
+  namespace: prod-contacts-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: contact-app
+  template:
+    metadata:
+      labels:
+        app: contact-app
+    spec:
+      containers:
+        - name: contact-app
+          image: sbmitra/contacts-app:2.0
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:123654@host.docker.internal:5432/contacts_db"
+            - name: SECRET_KEY
+              value: "f222b590f87733a5b55dccc1c9050bd4cbc4fe82a2428459"
+      hostAliases:
+        - ip: "192.168.0.163" # <-- UPDATED IP ADDRESS
+          hostnames:
+            - "host.docker.internal"
